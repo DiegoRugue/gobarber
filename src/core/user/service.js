@@ -6,9 +6,13 @@ class UserService {
 
     if (userExists) throw { code: 401, message: 'User already exists' };
 
-    const result = await UserRepository.store(user);
+    const id = await UserRepository.store(user);
 
-    return result;
+    return {
+      user: {
+        id,
+      },
+    };
   }
 }
 

@@ -1,4 +1,4 @@
-module.exports = (req, res, next) => {
+export default (req, res, next) => {
   res.ok = (content) => {
     res.status(200).send(content);
     next();
@@ -13,5 +13,6 @@ module.exports = (req, res, next) => {
     res.status(code).send({ error: message });
     next();
   };
+
   next();
 };

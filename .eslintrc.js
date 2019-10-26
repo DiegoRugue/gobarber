@@ -20,6 +20,7 @@ module.exports = {
     "camelcase": "off",
     "no-unused-vars": ["error", { "argsIgnorePattern": "next" }],
     "arrow-parens": "off",
-    "no-throw-literal": "off"
+    "no-throw-literal": "off",
+    "no-param-reassign": "off"
   },
 };

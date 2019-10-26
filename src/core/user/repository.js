@@ -1,10 +1,10 @@
-import User from '.';
+import User from './model';
 
 class UserRepository {
   async store(user) {
     const { id } = await User.create(user);
 
-    return { id };
+    return id;
   }
 
   async findUserByEmail(email) {
