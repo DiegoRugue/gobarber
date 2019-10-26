@@ -15,10 +15,11 @@ module.exports = {
     sourceType: 'module',
   },
   rules: {
-    "class-methoods-use-this": "off",
+    "class-methods-use-this": "off",
     "no-param-ressign": "off",
     "camelcase": "off",
     "no-unused-vars": ["error", { "argsIgnorePattern": "next" }],
-    "arrow-parens": "off"
+    "arrow-parens": "off",
+    "no-throw-literal": "off"
   },
 };
