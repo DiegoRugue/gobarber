@@ -8,7 +8,9 @@ class UserController {
   }
 
   async update(req, res) {
-    res.ok('gg');
+    const result = await UserService.update(req.userId, req.body);
+
+    res.ok(result);
   }
 }
 

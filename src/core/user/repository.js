@@ -1,4 +1,4 @@
-import User from './model';
+import User from '../models/User';
 
 class UserRepository {
   async store(user) {
@@ -11,6 +11,18 @@ class UserRepository {
     const user = await User.findOne({ where: { email } });
 
     return user;
+  }
+
+  async findUserById(id) {
+    const user = await User.findByPk(id);
+
+    return user;
+  }
+
+  async update(user, data) {
+    const result = await user.update(data);
+
+    return result;
   }
 }
 
