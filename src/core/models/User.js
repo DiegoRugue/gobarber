@@ -25,6 +25,10 @@ class User extends Model {
     });
   }
 
+  static associate(models) {
+    this.hasMany(models.File, { foreignKey: 'user_id' });
+  }
+
   checkPassword(password) {
     return compare(password, this.password_hash);
   }

@@ -21,6 +21,7 @@ module.exports = {
     "no-unused-vars": ["error", { "argsIgnorePattern": "next" }],
     "arrow-parens": "off",
     "no-throw-literal": "off",
-    "no-param-reassign": "off"
+    "no-param-reassign": "off",
+    "linebreak-style": "off",
   },
 };

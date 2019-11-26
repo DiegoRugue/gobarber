@@ -14,7 +14,7 @@ const upload = multer(configMulter);
 // Routes without authentication
 routes.post('/users', actionFilter(UserController.store));
 routes.post('/session', actionFilter(SessionController.store));
-routes.post('/file', upload.single('file'), actionFilter(FileController.store));
+routes.post('/files', upload.single('file'), actionFilter(FileController.store));
 
 routes.use(auth);
 
