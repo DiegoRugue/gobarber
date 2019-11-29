@@ -13,6 +13,18 @@ class AppointmentRepository {
 
     return isProvider;
   }
+
+  static async checkAppointment(providerId, hour) {
+    const isAvailable = await Appointment.findOne({
+      where: {
+        providerId,
+        createdAt: null,
+        date: hour,
+      },
+    });
+
+    return isAvailable;
+  }
 }
 
 export default AppointmentRepository;
