@@ -1,8 +1,8 @@
-import UserRepository from './repository';
 import UserScope from './scope';
+import UserRepository from './repository';
 
 class UserService {
-  async checkUserEmail(email) {
+  static async checkUserEmail(email) {
     const userExists = await UserRepository.findUserByEmail(email);
 
     if (userExists) throw { code: 401, message: 'E-mail already registered' };
@@ -10,7 +10,7 @@ class UserService {
     return true;
   }
 
-  async store(user) {
+  static async store(user) {
     await UserScope.store(user);
     await this.checkUserEmail(user.email);
 
@@ -23,7 +23,7 @@ class UserService {
     };
   }
 
-  async update(id, data) {
+  static async update(id, data) {
     const { email, oldPassword } = data;
 
     const user = await UserRepository.findUserById(id);
@@ -46,4 +46,4 @@ class UserService {
   }
 }
 
-export default new UserService();
+export default UserService;

@@ -1,7 +1,7 @@
 import * as Yup from 'yup';
 
 class UserScope {
-  async store(user) {
+  static async store(user) {
     const schema = Yup.object().shape({
       name: Yup.string().required(),
       email: Yup.string().email().required(),
@@ -13,7 +13,7 @@ class UserScope {
     });
   }
 
-  async update(user) {
+  static async update(user) {
     const schema = Yup.object().shape({
       name: Yup.string(),
       email: Yup.string().email(),
@@ -24,10 +24,10 @@ class UserScope {
         .when('password', (password, field) => (password ? field.required().oneOf([Yup.ref('password')]) : field)),
     });
 
-    await schema.validate(user).catch((err) => {
+    await schema.validate(user).catch(err => {
       throw { code: 400, message: err.errors };
     });
   }
 }
 
-export default new UserScope();
+export default UserScope;

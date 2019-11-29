@@ -1,7 +1,7 @@
 import SessionService from './service';
 
 class SessionController {
-  async store(req, res) {
+  static async store(req, res) {
     const { email, password } = req.body;
 
     const result = await SessionService.store(email, password);
@@ -10,4 +10,4 @@ class SessionController {
   }
 }
 
-export default new SessionController();
+export default SessionController;

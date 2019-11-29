@@ -6,16 +6,17 @@ class File extends Model {
       {
         name: Sequelize.STRING,
         path: Sequelize.STRING,
-        userId: Sequelize.INTEGER,
+        url: {
+          type: Sequelize.VIRTUAL,
+          get() {
+            return `http://localhost:3333/files/${this.path}`;
+          },
+        },
       },
       {
         sequelize,
       },
     );
-  }
-
-  static associate(models) {
-    this.belongsTo(models.User, { foreignKey: 'user_id' });
   }
 }
 
