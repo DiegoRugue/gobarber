@@ -1,4 +1,5 @@
 import Sequelize from 'sequelize';
+import mongoose from 'mongoose';
 import config from '../config/database';
 
 import User from '../app/models/User';
@@ -10,6 +11,7 @@ const models = [User, File, Appointment];
 class Database {
   constructor() {
     this.init();
+    this.mongo();
   }
 
   init() {
@@ -17,6 +19,13 @@ class Database {
 
     models.forEach(model => model.init(this.connection));
     models.forEach(model => model.associate && model.associate(this.connection.models));
+  }
+
+  mongo() {
+    this.mongoConnection = mongoose.connect(
+      'mongodb+srv://mongo:mongo@cluster0-oxcb5.mongodb.net/test?retryWrites=true&w=majority',
+      { useNewUrlParser: true, useUnifiedTopology: true, useFindAndModify: false },
+    );
   }
 }
 

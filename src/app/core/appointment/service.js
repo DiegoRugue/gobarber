@@ -1,24 +1,38 @@
-import { startOfHour, isBefore } from 'date-fns';
+import { startOfHour, isBefore, format } from 'date-fns';
+import pt from 'date-fns/locale/pt';
 import AppointmentScope from './scope';
 import AppointmentRepository from './repository';
+import Notification from '../../schemas/Notification';
 
 class AppointmentService {
   static async store(appointment) {
     await AppointmentScope.store(appointment);
 
-    const { date, providerId } = appointment;
+    const { date, providerId, userId } = appointment;
 
     const isProvider = await AppointmentRepository.checkProvider(providerId);
     if (!isProvider) throw { code: 401, message: 'User is not a provider' };
 
-    const hourStart = startOfHour(new Date(date));
+    const hourStart = startOfHour(date);
 
     if (isBefore(hourStart, new Date())) throw { code: 400, message: 'Past date are not permitted' };
 
-    const isAvailable = await AppointmentRepository.checkAppointment(providerId, hourStart);
-    if (!isAvailable) throw { code: 400, message: 'Appointment is not available' };
+    const existsAppointment = await AppointmentRepository.checkAppointment(providerId, hourStart);
+    if (existsAppointment) throw { code: 400, message: 'Appointment is not available' };
 
     const result = await AppointmentRepository.store(appointment);
+
+    const userName = await AppointmentRepository.getUserName(userId);
+    const formatedDate = format(
+      hourStart,
+      "'dia' dd 'de' MMMM 'às' H:mm'h'",
+      { locale: pt },
+    );
+
+    await Notification.create({
+      content: `Novo agendamento de ${userName} para ${formatedDate}`,
+      user: providerId,
+    });
 
     return result;
   }
