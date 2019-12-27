@@ -20,6 +20,12 @@ class AppointmentController {
 
     res.ok(result);
   }
+
+  static async delete(req, res) {
+    const result = await AppointmentService.delete(req.params.id, req.userId);
+
+    res.ok(result);
+  }
 }
 
 export default AppointmentController;

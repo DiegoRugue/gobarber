@@ -1,4 +1,4 @@
-import { startOfHour, isBefore, format } from 'date-fns';
+import { startOfHour, isBefore, format, subHours } from 'date-fns';
 import pt from 'date-fns/locale/pt';
 import AppointmentScope from './scope';
 import AppointmentRepository from './repository';
@@ -35,6 +35,26 @@ class AppointmentService {
     });
 
     return result;
+  }
+
+  static async delete(id, userId) {
+    const appointment = await AppointmentRepository.findById(id);
+
+    if (appointment.user.userId !== userId) {
+      throw { code: 401, message: "You don't have permission to cancel this appointment" };
+    }
+
+    const dateWithSub = subHours(appointment.date, 2);
+
+    if (isBefore(dateWithSub, new Date())) {
+      throw { code: 401, message: 'You can only cancel appointment 2 hours in advance.' };
+    }
+
+    appointment.canceledAt = new Date();
+
+    await appointment.save();
+
+    return appointment;
   }
 }
 

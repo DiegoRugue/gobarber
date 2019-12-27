@@ -35,6 +35,12 @@ class AppointmentRepository {
     return newAppointment;
   }
 
+  static async findById(id) {
+    const appointment = await Appointment.findByPk(id);
+
+    return appointment;
+  }
+
   static async checkProvider(id) {
     const isProvider = await User.findOne({
       where: { id, provider: true },
