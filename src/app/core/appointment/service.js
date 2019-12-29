@@ -3,6 +3,7 @@ import pt from 'date-fns/locale/pt';
 import AppointmentScope from './scope';
 import AppointmentRepository from './repository';
 import Notification from '../../schemas/Notification';
+import Mail from '../../../lib/Mail';
 
 class AppointmentService {
   static async store(appointment) {
@@ -38,9 +39,9 @@ class AppointmentService {
   }
 
   static async delete(id, userId) {
-    const appointment = await AppointmentRepository.findById(id);
+    const appointment = await AppointmentRepository.findAppointment(id);
 
-    if (appointment.user.userId !== userId) {
+    if (appointment.userId != userId) {
       throw { code: 401, message: "You don't have permission to cancel this appointment" };
     }
 
@@ -53,6 +54,12 @@ class AppointmentService {
     appointment.canceledAt = new Date();
 
     await appointment.save();
+
+    await Mail.sendMail({
+      to: `${appointment.provider.name} <${appointment.provider.email}>`,
+      subject: 'Agendamento cancelado',
+      text: 'Você tem um novo cancelamento',
+    });
 
     return appointment;
   }

@@ -1,7 +1,6 @@
 import { Router } from 'express';
 import multer from 'multer';
 import configMulter from './config/multer';
-import actionFilter from './middleweres/actionfilter';
 import auth from './middleweres/auth';
 
 import UserController from './app/core/user/controller';
@@ -16,25 +15,26 @@ const routes = new Router();
 const upload = multer(configMulter);
 
 // Routes without authentication
-routes.post('/users', actionFilter(UserController.store));
+routes.post('/users', UserController.store);
 
-routes.post('/files', upload.single('file'), actionFilter(FileController.store));
+routes.post('/files', upload.single('file'), FileController.store);
 
-routes.post('/session', actionFilter(SessionController.store));
+routes.post('/session', SessionController.store);
 
 routes.use(auth);
 
 // Routes with authentication
-routes.get('/providers', actionFilter(ProviderController.index));
+routes.get('/providers', ProviderController.index);
 
-routes.put('/users', actionFilter(UserController.update));
+routes.put('/users', UserController.update);
 
-routes.get('/appointments', actionFilter(AppointmentController.index));
-routes.post('/appointments', actionFilter(AppointmentController.store));
+routes.get('/appointments', AppointmentController.index);
+routes.post('/appointments', AppointmentController.store);
+routes.delete('/appointments/:id', AppointmentController.delete);
 
-routes.get('/schedules', actionFilter(ScheduleController.index));
+routes.get('/schedules', ScheduleController.index);
 
-routes.get('/notifications', actionFilter(NotificationController.index));
-routes.put('/notifications/:id', actionFilter(NotificationController.update));
+routes.get('/notifications', NotificationController.index);
+routes.put('/notifications/:id', NotificationController.update);
 
 export default routes;

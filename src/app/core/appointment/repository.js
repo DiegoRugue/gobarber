@@ -35,8 +35,14 @@ class AppointmentRepository {
     return newAppointment;
   }
 
-  static async findById(id) {
-    const appointment = await Appointment.findByPk(id);
+  static async findAppointment(id) {
+    const appointment = await Appointment.findByPk(id, {
+      include: {
+        model: User,
+        as: 'provider',
+        attributes: ['name', 'email'],
+      },
+    });
 
     return appointment;
   }

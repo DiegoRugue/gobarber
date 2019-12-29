@@ -1,35 +1,10 @@
 version: "3.7"
 
 services:
-
-  mypg:
-    image: postgres
-    logging:
-      driver: json-file
-      options:
-        max-size: "10m"
-        max-file: "5"
-    environment:
-      POSTGRES_PASSWORD: "admin"
-    networks:
-      - gobarber-network
-    volumes:
-      - ./data:/var/lib/postgresql/data
-    ports:
-      - 5430:5432
-
   mypgadmin:
     image: dpage/pgadmin4
     environment:
       PGADMIN_DEFAULT_EMAIL: "diego.rugue@admin.com"
       PGADMIN_DEFAULT_PASSWORD: "admin"
     ports:
-      - 8070:80
-    networks:
-      - gobarber-network
-    depends_on:
-      - mypg
-
-networks:
-  gobarber-network:
-    driver: bridge
+      - 80:80
