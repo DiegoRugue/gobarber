@@ -3,7 +3,8 @@ import pt from 'date-fns/locale/pt';
 import AppointmentScope from './scope';
 import AppointmentRepository from './repository';
 import Notification from '../../schemas/Notification';
-import Mail from '../../../lib/Mail';
+import Queue from '../../../lib/Queue';
+import CancellationMail from '../../jobs/CancellationMail';
 
 class AppointmentService {
   static async store(appointment) {
@@ -55,10 +56,8 @@ class AppointmentService {
 
     await appointment.save();
 
-    await Mail.sendMail({
-      to: `${appointment.provider.name} <${appointment.provider.email}>`,
-      subject: 'Agendamento cancelado',
-      text: 'Você tem um novo cancelamento',
+    await Queue.add(CancellationMail.key, {
+      appointment,
     });
 
     return appointment;

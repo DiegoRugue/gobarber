@@ -6,6 +6,7 @@ import { resolve } from 'path';
 import routes from './routes';
 import configSentry from './config/sentry';
 import response from './middleweres/response';
+import Queue from './lib/Queue';
 
 import './database';
 
@@ -18,6 +19,8 @@ class App {
     this.middlewares();
     this.routes();
     this.exceptionHandler();
+
+    Queue.processQueue();
   }
 
   middlewares() {
